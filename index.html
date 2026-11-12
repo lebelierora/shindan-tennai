@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>るべりえ 店内おすすめ診断＆ルーレット</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F5EF; --beige:#EEE4DA; --red:#A33327; --red-dark:#8C2A20; --brown:#40312F; --muted:#7A6863;
+  --yellow:#E9C86B; --card:#FFFFFF; --line:#E7DDD1; --soft-red:#FDF0ED;
+  --shadow:0 10px 30px rgba(64,49,47,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#221C1B; --beige:#2E2724; --card:#2E2826; --line:#453A37; --brown:#F3EDE6; --muted:#C9B8B1; --soft-red:#3A2320; --shadow:0 10px 30px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg); color:var(--brown); line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 28px;min-height:100dvh;display:flex;flex-direction:column}
+.ribbon{position:relative;background:var(--red);color:#fff;text-align:center;padding:14px 18px 12px;margin:6px 8px 0;border-radius:6px}
+.ribbon::before,.ribbon::after{content:"";position:absolute;top:10px;border:14px solid transparent}
+.ribbon::before{left:-18px;border-right-color:var(--red-dark);border-top-color:var(--red-dark)}
+.ribbon::after{right:-18px;border-left-color:var(--red-dark);border-bottom-color:var(--red-dark)}
+.ribbon .shop{font-size:12px;letter-spacing:.12em;font-weight:700;opacity:.92}
+.ribbon h1{margin:2px 0 0;font-size:25px;line-height:1.25;font-weight:800;letter-spacing:.02em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px 18px;margin-top:18px}
+.lead{font-size:22px;font-weight:800;line-height:1.4;margin:4px 0 8px;text-align:center}
+.sub{color:var(--muted);font-size:15px;text-align:center;margin:0 0 6px}
+.pizza-hero{font-size:52px;text-align:center;line-height:1;margin:10px 0 2px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:58px;border:none;border-radius:14px;cursor:pointer;font-family:inherit;font-weight:800;font-size:17px;text-decoration:none;padding:14px 16px;transition:transform .08s ease, opacity .15s}
+.btn:active{transform:scale(.985)}
+.btn-primary{background:var(--red);color:#fff;box-shadow:0 6px 16px rgba(163,51,39,.28)}
+.btn-primary:hover{background:var(--red-dark)}
+.btn-ghost{background:transparent;color:var(--brown);border:2px solid var(--line);min-height:52px;font-size:15px}
+.btn-sub{background:var(--beige);color:var(--brown);min-height:52px;font-size:15px}
+.btn-roulette{background:var(--card);color:var(--brown);border:2px solid var(--yellow);min-height:52px;font-size:15px}
+.stack{display:grid;gap:10px;margin-top:18px}
+.choices{display:grid;gap:12px;margin-top:16px}
+.choice{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:15px 14px;cursor:pointer;font-family:inherit;color:var(--brown);min-height:64px}
+.choice:hover{border-color:var(--red)}
+.choice .ico{font-size:27px;flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;background:var(--soft-red);border-radius:12px}
+.choice .t{font-weight:800;font-size:17px;line-height:1.35}
+.choice .d{font-size:13px;color:var(--muted);font-weight:500}
+.choice .arrow{margin-left:auto;color:var(--muted);font-weight:800}
+.q-label{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red);text-align:center}
+.q-title{font-size:23px;font-weight:800;text-align:center;margin:6px 0 2px;line-height:1.4}
+.backlink{background:none;border:none;font-family:inherit;font-size:14px;color:var(--muted);cursor:pointer;padding:10px;margin-top:6px;width:100%}
+.season-note{margin-top:14px;background:#FFF8E1;border:1.5px dashed #D9B84A;border-radius:14px;padding:12px 14px;font-size:14px}
+@media(prefers-color-scheme:dark){.season-note{background:#332A12;border-color:#8A7326;color:#F3E6B8}}
+.season-note strong{color:var(--red)}
+@media(prefers-color-scheme:dark){.season-note strong{color:var(--yellow)}}
+.result-badge{display:inline-block;background:var(--yellow);color:#4A3A00;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px}
+.result-cat{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red);text-align:center;margin-top:8px}
+.result-name{font-size:26px;font-weight:800;line-height:1.35;margin:8px 0 4px;text-align:center}
+.result-price{font-size:20px;font-weight:800;color:var(--red);text-align:center}
+.result-desc{font-size:15.5px;margin:10px 0 4px;text-align:center}
+.note-badge{display:inline-block;background:var(--soft-red);color:var(--red);font-weight:800;font-size:12px;padding:3px 10px;border-radius:999px;margin-top:6px}
+.result-img{display:block;width:100%;height:auto;border-radius:14px;margin:12px 0 4px;box-shadow:0 6px 18px rgba(64,49,47,.12)}
+.sub-img{display:block;width:180px;max-width:70%;height:auto;border-radius:10px;margin:8px auto 2px}
+.top-box{margin:12px auto 0;max-width:440px;background:var(--beige);border-radius:14px;padding:10px 14px;font-size:14px;text-align:center}
+.top-box .top-label{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--red)}
+.sub-rec{margin-top:18px;border-top:1.5px dashed var(--line);padding-top:16px;text-align:center}
+.sub-rec .sub-label{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red)}
+.sub-rec .sub-name{font-size:18px;font-weight:800;line-height:1.4;margin:6px 0 2px}
+.sub-rec .sub-price{font-size:16px;font-weight:800;color:var(--red)}
+.wheel-wrap{position:relative;width:min(330px,88vw);margin:20px auto 6px;aspect-ratio:1/1}
+.wheel-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);z-index:3;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:26px solid var(--red);filter:drop-shadow(0 2px 3px rgba(64,49,47,.3))}
+#wheelSvg{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 10px 26px rgba(64,49,47,.18);border:4px solid var(--red-dark);background:var(--card)}
+#wheelRot{transform-origin:160px 160px}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:84px;height:84px;border-radius:50%;border:3px solid var(--red-dark);background:var(--red);color:#fff;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 4px 12px rgba(64,49,47,.3);padding:0;line-height:1.3}
+.wheel-center:disabled{opacity:.65;cursor:default}
+.wheel-center:active{transform:translate(-50%,-50%) scale(.97)}
+.spin-btn:disabled{opacity:.55;cursor:default}
+.pattern-label{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red);text-align:center;margin-top:16px}
+.pattern-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.p-chip{border:2px solid var(--line);background:var(--card);color:var(--brown);font-family:inherit;font-weight:800;font-size:14px;line-height:1.3;padding:9px 14px;border-radius:999px;cursor:pointer;min-height:44px}
+.p-chip.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 10px rgba(163,51,39,.25)}
+.p-chip:disabled{opacity:.55;cursor:default}
+.roulette-result{margin-top:20px;border-top:1.5px dashed var(--line);padding-top:18px;text-align:center}
+.hidden{display:none !important}
+footer{margin-top:auto;text-align:center;padding:22px 8px 4px;color:var(--muted);font-size:13px}
+footer .fname{font-weight:800;color:var(--brown);font-size:14px}
+.small{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- START -->
+  <section id="screen-start">
+    <div class="ribbon">
+      <div class="shop">るべりえ 店内版</div>
+      <h1>どれにしようか<br>迷ったら</h1>
+    </div>
+    <div class="card">
+      <div class="pizza-hero" aria-hidden="true">🍕</div>
+      <p class="lead">店内メニューのおすすめ診断</p>
+      <p class="sub">カテゴリと好みを選ぶだけで、<br>店内メニューの中からご案内します</p>
+      <div class="stack">
+        <button class="btn btn-primary" onclick="showDiagCats()">診断をはじめる →</button>
+        <button class="btn btn-roulette" onclick="showRoulette()">🎡 ルーレットで決める</button>
+      </div>
+      <p class="small">決められない日は、運におまかせ</p>
+      <div class="season-note">
+        <strong>🌿 季節メニューもあります</strong><br>
+        旬の食材を使った、今だけのメニューです。<strong>材料終わり次第終了</strong>です。
+        <a class="btn btn-sub" style="margin-top:10px" href="https://lebelier-menu.my.canva.site/page-5" target="_top" rel="noopener">季節メニューを見る →</a>
+      </div>
+      <p class="small">平日は、ピザ＋ドリンクのお得なセットメニューもあります（11:00〜14:00／17:00〜20:00）</p>
+    </div>
+  </section>
+
+  <!-- DIAGNOSIS: CATEGORY -->
+  <section id="screen-dcats" class="hidden">
+    <div class="card">
+      <div class="q-label">QUESTION 1</div>
+      <h2 class="q-title">何が食べたいですか？</h2>
+      <div class="choices" id="diagCatChoices"></div>
+      <button class="backlink" onclick="showStart()">← 最初に戻る</button>
+    </div>
+  </section>
+
+  <!-- DIAGNOSIS: PREFERENCE -->
+  <section id="screen-dpref" class="hidden">
+    <div class="card">
+      <div class="q-label">QUESTION 2</div>
+      <h2 class="q-title" id="diagPrefTitle">好みは？</h2>
+      <div class="choices" id="diagPrefChoices"></div>
+      <button class="backlink" onclick="showDiagCats()">← カテゴリに戻る</button>
+    </div>
+  </section>
+
+  <!-- ROULETTE -->
+  <section id="screen-roulette" class="hidden">
+    <div class="card">
+      <div class="q-label">ROULETTE</div>
+      <h2 class="q-title">今日のおすすめルーレット</h2>
+      <p class="sub" id="rouletteDesc">カテゴリを選んで、まわしてください</p>
+      <div class="pattern-label">カテゴリ</div>
+      <div class="pattern-chips" id="rouletteChips" role="group" aria-label="カテゴリ"></div>
+      <div id="wheelArea">
+        <div class="wheel-wrap">
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <svg id="wheelSvg" viewBox="0 0 320 320" role="img" aria-label="おすすめルーレット">
+            <g id="wheelRot"></g>
+          </svg>
+          <button class="wheel-center" id="wheelCenterBtn" onclick="spinRoulette()">まわす</button>
+        </div>
+        <div class="stack">
+          <button class="btn btn-primary spin-btn" id="spinBtn" onclick="spinRoulette()">まわす</button>
+        </div>
+      </div>
+      <div class="roulette-result hidden" id="rouletteResult"></div>
+      <button class="backlink" onclick="showStart()">← トップへ戻る</button>
+    </div>
+  </section>
+
+  <!-- RESULT (diagnosis) -->
+  <section id="screen-result" class="hidden">
+    <div class="card" id="resultCard"></div>
+  </section>
+
+
+  <footer>
+    <div class="fname">るべりえ — Le bélier</div>
+    <div>群馬県邑楽町の創作ピザとスイーツのお店 るべりえ</div>
+    <div>価格はメニューブック掲載の税込価格です</div>
+  </footer>
+</div>
+
+<script>
+// 店内メニュー（Canvaメニューブック 2026-11-11確認、全11ページ）
+// 季節・限定メニューは変動するため商品名を固定せず、季節メニューのリンク先へ飛ばす
+var CATS = [
+{ id:"hall", name:"ホールピザ", icon:"🍕", sub:"約18〜20cm・1人前サイズ",
+  filters:[
+    {k:"tomato", t:"トマト系", d:"完熟トマトの王道の味", ico:"🍅"},
+    {k:"cheese", t:"チーズたっぷり", d:"濃厚で満足感のある一枚", ico:"🧀"},
+    {k:"meat", t:"お肉系", d:"チキンやベーコンでがっつり", ico:"🍗"},
+    {k:"veg", t:"野菜・キノコ系", d:"野菜やキノコのうまみ", ico:"🍄"}
+  ],
+  items:[
+    {n:"マルゲリータ", p:"650円", tags:["tomato"], d:"イタリア産完熟トマト・モッツァレラ・バジル。王道の一番人気", top:"チーズ2倍 850円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/0b0e86af91999ddffc41.jpeg/fit=cover,w=924,h=660"},
+    {n:"るべりえミックス", p:"700円", tags:["meat","tomato"], d:"サラミ・ペパロニ・ピーマン・レッドチェダー", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/7040ebfc800ba1b701c4.jpeg/fit=cover,w=924,h=660"},
+    {n:"クアトロフロマッジ", p:"700円", tags:["cheese"], d:"4種のチーズ。ハチミツトッピングもおすすめ", top:"ハラペーニョ +80円／邑楽町産ハチミツ +100円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/9caf8c2c8fd180fc2a9a.jpeg/fit=cover,w=924,h=660"},
+    {n:"マリナーラ", p:"500円", tags:["tomato"], d:"チーズなし。トマト・オレガノ・ガーリックオイルのシンプルな味", top:"ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/6e5f56c6554d1e0972c0.jpeg/fit=cover,w=924,h=660"},
+    {n:"ジェノヴェーゼ", p:"680円", tags:["cheese","veg"], d:"バジルペーストとモッツァレラ", top:"チーズ2倍 880円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/c8d3923c4e8116e5ab5b.jpeg/fit=cover,w=924,h=660"},
+    {n:"シシリアーナ", p:"680円", tags:["tomato","meat"], d:"アンチョビ・ペパロニ・ブラックオリーブ", top:"ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/c39be451273f9ea4bd41.jpeg/fit=cover,w=924,h=660"},
+    {n:"サンキューマルゲリータ", p:"700円", tags:["tomato"], d:"ハートの形が目印のマルゲリータ", top:"チーズ2倍 900円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/c247e56cc5175df28e8b.jpeg/fit=cover,w=924,h=660"},
+    {n:"バジルチキン", p:"750円", tags:["meat","cheese"], d:"スモークチキンとバジルペースト", top:"チーズ2倍 950円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/327806f3c878c1b68fdc.jpeg/fit=cover,w=924,h=660"},
+    {n:"テリヤキチキン", p:"750円", tags:["meat"], d:"スモークチキンにテリヤキソースとマヨネーズ", top:"チーズ2倍 950円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/fd36f94a800abb12bb6b.jpeg/fit=cover,w=924,h=660"},
+    {n:"カリカリベーコン", p:"750円", tags:["meat"], d:"ベーコン・コーン・マスカルポーネ", top:"ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/e220e52406e94787112e.jpeg/fit=cover,w=924,h=660"},
+    {n:"アンチョビコーン", p:"750円", tags:["veg","meat"], d:"コーン・アンチョビ・海苔の組み合わせ", top:"ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/75f9f2ad1cec733b362b.jpeg/fit=cover,w=924,h=660"},
+    {n:"キノコのマリナーラ", p:"750円", tags:["veg","tomato"], d:"4種のキノコとトマト", top:"ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/fa2a98125082eb9b96d2.jpeg/fit=cover,w=924,h=660"},
+    {n:"キノコのビアンカ", p:"750円", tags:["veg","cheese"], d:"4種のキノコとモッツァレラの白いピザ", top:"チーズ2倍 950円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/66ae56d931e7e4548ead.jpeg/fit=cover,w=924,h=660"},
+    {n:"燻製チーズのマルゲリータ", p:"850円", tags:["cheese","tomato"], d:"イタリア産水牛モッツァレラの燻製を使ったマルゲリータ", top:"燻製チーズ2倍 1,250円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/a1218ed8b2e74f634f2f.jpeg/fit=cover,w=924,h=660"},
+    {n:"無花果アトロフロマッジ", p:"850円", tags:["cheese"], d:"邑楽町産セミドライ無花果と4種のチーズ", top:"ハチミツトッピング +100円／ハラペーニョ +80円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/25f92a6c3a51b2ebdbab.jpeg/fit=cover,w=924,h=660"},
+    {n:"七福アトロフロマッジ", p:"850円", tags:["cheese"], d:"7種のチーズをのせた贅沢な一枚", top:"邑楽町産ハチミツ +100円／邑楽町産無花果セミドライ +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/549a5ea1f8cba6ad9074.jpeg/fit=cover,w=924,h=660"},
+    {n:"るべりえビスマルク", p:"850円", tags:["cheese","meat"], d:"卵とトリュフオイル", note:"イートイン限定", top:"チーズ2倍 1,250円／ハラペーニョ +80円"},
+    {n:"セレブベーコンエッグ", p:"850円", tags:["meat","cheese"], d:"卵・ベーコン・トリュフオイル", note:"イートイン限定", top:"チーズ2倍 1,250円／ハラペーニョ +80円"}
+  ]
+},
+{ id:"age", name:"揚げピザ", icon:"🥟", sub:"生地で包んでカラッと揚げた、るべりえ名物",
+  filters:[
+    {k:"cheese", t:"チーズ系", d:"とろけるチーズの揚げピザ", ico:"🧀"},
+    {k:"stew", t:"クリーム・シチュー系", d:"じゃがいも入りのまろやかな味", ico:"🥔"},
+    {k:"curry", t:"カレー系", d:"トマトカレーの揚げピザ", ico:"🍛"},
+    {k:"sweet", t:"甘い系", d:"スイーツ感覚の揚げピザ", ico:"🍌"}
+  ],
+  items:[
+    {n:"群馬ルゲリータ", p:"450円", tags:["cheese"], d:"マルゲリータの揚げピザ。トマト・モッツァレラ・バジル", top:"チーズ2倍 600円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/ff3b063f40bfb7dd3388.jpeg/fit=cover,w=924,h=660"},
+    {n:"群馬ジルチキン", p:"450円", tags:["stew","cheese"], d:"スモークチキン・モッツァレラ・バジルペースト", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/840c58aa3b2bf22b5378.jpeg/fit=cover,w=924,h=660"},
+    {n:"群馬トロフロマッジ", p:"450円", tags:["cheese"], d:"4種のチーズの揚げピザ", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/20d67ad795ec3afab892.jpeg/fit=cover,w=924,h=660"},
+    {n:"いろいろキノコのクリームシチュー", p:"480円", tags:["stew"], d:"じゃがいもと4種のキノコのクリームシチュー", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/70f2227b385a16072c47.jpeg/fit=cover,w=924,h=660"},
+    {n:"プレミアムじゃがチーズ", p:"500円", tags:["cheese"], d:"5種のチーズとじゃがいも。るべりえ名物", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/004dfc8fe98814cb2894.jpeg/fit=cover,w=924,h=660"},
+    {n:"プレミアムバジルチキン", p:"500円", tags:["stew"], d:"スモークチキン・バジルペースト・フランス産マスタード", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/cdbfb07352ce1ba4149b.jpeg/fit=cover,w=924,h=660"},
+    {n:"るべりえシュクメルリ", p:"500円", tags:["stew"], d:"スモークチキンとキノコのガーリッククリーム風", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/80099fa8f34227fc85ff.jpeg/fit=cover,w=924,h=660"},
+    {n:"太陽のトマトカレー", p:"480円", tags:["curry"], d:"じゃがいもとトマトカレー", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/f4f758627aaa59785d9f.jpeg/fit=cover,w=924,h=660"},
+    {n:"トマトコーンカレー", p:"500円", tags:["curry"], d:"トマトカレーにコーン", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/ea43bc9c58c9d208c1de.jpeg/fit=cover,w=924,h=660"},
+    {n:"暴れん坊帆立カレー", p:"500円", tags:["curry"], d:"帆立入りのトマトカレー。ハバネロ入り（抜きもできます）", top:"ハバネロ抜きもできます", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/06af95c300ab4ca3b26d.jpeg/fit=cover,w=924,h=660"},
+    {n:"チョコバナナッツ", p:"480円", tags:["sweet"], d:"ビターチョコ・バナナソテー・アーモンド", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/15f630fa481d4c69c797.jpeg/fit=cover,w=924,h=660"},
+    {n:"マスカルあんバター", p:"450円", tags:["sweet"], d:"つぶあん・マスカルポーネ・バター", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/ffa4c815b21aeeddefb0.jpeg/fit=cover,w=924,h=660"},
+    {n:"あんチョコビター", p:"450円", tags:["sweet"], d:"つぶあんとビターチョコ", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/8f1311b113b4345fb477.jpeg/fit=cover,w=924,h=660"},
+    {n:"イチジクあんティラミス", p:"480円", tags:["sweet"], d:"つぶあんと邑楽町産セミドライ無花果のティラミス風", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/be084b37fa3f8c56a988.jpeg/fit=cover,w=924,h=660"}
+  ]
+},
+{ id:"sweetpizza", name:"スイーツピザ", icon:"🍓", sub:"デザート感覚で楽しめる甘いピザ",
+  filters:[
+    {k:"berry", t:"ベリー系", d:"甘酸っぱいベリーの味", ico:"🫐"},
+    {k:"rich", t:"濃厚な甘さ", d:"チョコやキャラメルの甘さ", ico:"🍫"},
+    {k:"light", t:"さっぱり系", d:"軽く食べられる甘さ", ico:"🍋"}
+  ],
+  items:[
+    {n:"マスカルポーネとミックスベリー", p:"680円", tags:["berry","light"], d:"マスカルポーネとミックスベリー、自家製ベリーソース", top:"邑楽町産ハチミツ +100円／バニラアイス +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/30e2d18b5cfc4243af93.jpeg/fit=cover,w=924,h=660"},
+    {n:"レモンバターシュガー", p:"550円", tags:["light"], d:"バター・グラニュー糖・レモンのさっぱりした甘さ", top:"邑楽町産ハチミツ +100円／バニラアイス +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/50c568275bf2efbacd53.jpeg/fit=cover,w=924,h=660"},
+    {n:"バナナキャラメル", p:"680円", tags:["rich"], d:"バナナとマスカルポーネ、自家製キャラメルソース", top:"邑楽町産ハチミツ +100円／バニラアイス +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/82a6fb67e08ff0b7fed1.jpeg/fit=cover,w=924,h=660"},
+    {n:"るべりえティラミス", p:"680円", tags:["rich"], d:"マスカルポーネとコーヒーソースのティラミス風", top:"ハチミツ +100円／バニラアイス +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/273cb50594f19a984112.jpeg/fit=cover,w=924,h=660"},
+    {n:"メルティービター", p:"750円", tags:["rich","berry"], d:"ビターチョコとミックスベリー", top:"ハチミツ +100円／バニラアイス +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/21ee74660d3e763933df.jpeg/fit=cover,w=924,h=660"},
+    {n:"ホワイトベリー", p:"750円", tags:["berry","rich"], d:"ホワイトチョコとミックスベリー", top:"ハチミツ +100円／バニラアイス +150円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/0e0b6705bb51b58c2cbe.jpeg/fit=cover,w=924,h=660"}
+  ]
+},
+{ id:"sweets", name:"定番スイーツ", icon:"🍰", sub:"イートイン限定のデザート",
+  filters:[
+    {k:"choco", t:"チョコ系", d:"濃厚なチョコのデザート", ico:"🍫"},
+    {k:"coffee", t:"コーヒー系", d:"エスプレッソのデザート", ico:"☕"},
+    {k:"ice", t:"アイス系", d:"冷たいデザート", ico:"🍨"}
+  ],
+  items:[
+    {n:"ガトーショコラ", p:"500円", tags:["choco"], d:"濃厚なカカオのガトーショコラ", note:"イートイン限定", top:"バニラアイス +150円"},
+    {n:"スペシャルチョコバナナサンデー", p:"600円", tags:["choco","ice"], d:"ベルギーチョコアイスとバナナのサンデー", note:"イートイン限定"},
+    {n:"アッフォガード", p:"500円", tags:["coffee","ice"], d:"エスプレッソとバニラアイス", note:"イートイン限定"},
+    {n:"アイスクリーム（単品）", p:"150円", tags:["ice"], d:"バニラアイス／ベルギーチョコアイス", note:"イートイン限定"}
+  ]
+},
+{ id:"side", name:"サイドメニュー", icon:"🥗", sub:"前菜・おつまみ・チキン・シェアメニュー",
+  filters:[
+    {k:"light", t:"あっさり・軽く", d:"まずは軽く一品", ico:"🥒"},
+    {k:"ham", t:"ハム・チーズ", d:"お酒にも合う一品", ico:"🧀"},
+    {k:"chicken", t:"チキン・揚げ物", d:"揚げ物でしっかり", ico:"🍗"},
+    {k:"share", t:"みんなでシェア", d:"大人数で分け合えるメニュー", ico:"🎉"}
+  ],
+  items:[
+    {n:"グリーンオリーブ", p:"330円", tags:["light"], d:"種あり6粒"},
+    {n:"ゼッポレ", p:"330円", tags:["share","chicken"], d:"ピザ生地に生海苔を練り込んだ揚げパン", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/3c16b1492c2f26fa8b48.jpeg/fit=cover,w=924,h=660"},
+    {n:"ピクルス", p:"330円", tags:["light"], d:"さっぱりした箸休め"},
+    {n:"燻製モッツァレラチーズ", p:"500円", tags:["ham"], d:"香りのよい燻製チーズ"},
+    {n:"カプレーゼ", p:"500円", tags:["light"], d:"トマトとモッツァレラの定番前菜"},
+    {n:"じゃがいも", p:"400円", tags:["chicken","share"], d:"フレーバーが選べる素揚げ（塩／パルメザンチーズ／バジルソース ほか）"},
+    {n:"もつトマト煮込み", p:"480円", tags:["share"], d:"トマトで煮込んだもつ煮込み", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/48050b17d5a09487c307.jpeg/fit=cover,w=924,h=660"},
+    {n:"るべりえクリスピーチキン", p:"480円", tags:["chicken"], d:"国産鶏胸肉の自家仕込み、5〜6個。ピリ辛変更もできます", top:"ピリ辛に変更 +30円", img:"https://imagedelivery.net/QondspN4HIUvB_R16-ddAQ/63e43a8bf54f677c995609ab/165497a837d0f0d1a5c8.jpeg/fit=cover,w=924,h=660"},
+    {n:"パーティーるべりえチキン", p:"900円", tags:["chicken","share"], d:"約300g、10〜12個。みんなでつまめる量", top:"ピリ辛に変更 +50円"},
+    {n:"グリルソーセージ", p:"400円〜", tags:["chicken","share"], d:"4本から。1本追加＋100円", top:"1本追加 +100円"},
+    {n:"ミラノサラミ", p:"550円", tags:["ham"], d:"イタリアのサラミ"},
+    {n:"生ハム プロシュート", p:"680円", tags:["ham"], d:"定番の生ハム"},
+    {n:"コッパ", p:"580円", tags:["ham"], d:"豚肩ロースのハム"},
+    {n:"スペック", p:"580円", tags:["ham"], d:"燻製生ハム"},
+    {n:"スモークチキンスライス", p:"500円", tags:["ham"], d:"スモークチキンのスライス"},
+    {n:"パーティーセット", p:"2,900円", tags:["share"], d:"ハム盛り合わせ・チキン・ゼッポレ・じゃがいもの盛り合わせセット"},
+    {n:"前菜盛り合わせ", p:"1,300円", tags:["share"], d:"内容は季節により変わります", note:"イートイン限定"},
+    {n:"ハム盛り合わせ", p:"1,600円", tags:["share","ham"], d:"2〜3人前のハム盛り合わせ"},
+    {n:"揚げ物盛り合わせ", p:"700円", tags:["share","chicken"], d:"内容は季節により変わります"}
+  ]
+},
+{ id:"softdrink", name:"ドリンク", icon:"🥤", sub:"ソフトドリンク",
+  filters:[
+    {k:"tea", t:"お茶・コーヒー", d:"落ち着く一杯", ico:"🍵"},
+    {k:"soda", t:"ジュース・ソーダ", d:"爽やかな一杯", ico:"🥤"},
+    {k:"milk", t:"ミルク・甘い系", d:"まろやかで甘い一杯", ico:"🥛"}
+  ],
+  items:[
+    {n:"烏龍茶", p:"350円", tags:["tea"], d:"ICE／HOT", top:"アイスのトッピング +100円"},
+    {n:"オレンジジュース", p:"400円", tags:["soda"], d:"定番ジュース", top:"アイスのトッピング +100円"},
+    {n:"ペシュウーロン", p:"400円", tags:["tea"], d:"烏龍茶＋ピーチシロップ", top:"アイスのトッピング +100円"},
+    {n:"トロピカルウーロン", p:"400円", tags:["tea"], d:"烏龍茶＋パッションフルーツシロップ", top:"アイスのトッピング +100円"},
+    {n:"るべりえソーダ", p:"400円", tags:["soda"], d:"シロップが選べるオリジナルソーダ", top:"アイスのトッピング +100円"},
+    {n:"るべりえミルク", p:"450円", tags:["milk"], d:"シロップが選べるミルクドリンク", top:"アイスのトッピング +100円"},
+    {n:"緑色じゃないクリームソーダ", p:"500円", tags:["soda"], d:"色が選べる、緑色じゃないクリームソーダ"},
+    {n:"ホットコーヒー", p:"400円", tags:["tea"], d:"温かいコーヒー", top:"アイスのトッピング +100円"},
+    {n:"アイスコーヒー", p:"450円", tags:["tea"], d:"冷たいコーヒー", top:"アイスのトッピング +100円"},
+    {n:"カフェラテ", p:"450円", tags:["milk","tea"], d:"ICE／HOT", top:"アイスのトッピング +100円"},
+    {n:"エスプレッソ", p:"350円", tags:["tea"], d:"ダブルは450円", note:"イートイン限定", top:"アイスのトッピング +100円"},
+    {n:"エスプレッソソーダ", p:"450円", tags:["soda"], d:"エスプレッソのソーダ割り", top:"アイスのトッピング +100円"},
+    {n:"人生のように甘過ぎないココア", p:"450円", tags:["milk"], d:"甘さ控えめのココア", top:"アイスのトッピング +100円"}
+  ]
+},
+{ id:"alcohol", name:"アルコール", icon:"🍺", sub:"ビール・ワイン・カクテルなど",
+  filters:[
+    {k:"beer", t:"ビール", d:"まずはビールから", ico:"🍺"},
+    {k:"wine", t:"ワイン", d:"グラスでもボトルでも", ico:"🍷"},
+    {k:"cocktail", t:"カクテル・サワー", d:"ハイボールやサワー", ico:"🍸"},
+    {k:"other", t:"その他", d:"日本酒やリキュール", ico:"🍶"}
+  ],
+  items:[
+    {n:"キリンハートランド生ビール", p:"600円", tags:["beer"], d:"生ビール"},
+    {n:"ちびビール", p:"490円", tags:["beer"], d:"ハートランド生ビールの小さいサイズ"},
+    {n:"キリンハートランド瓶ビール", p:"700円", tags:["beer"], d:"瓶ビール"},
+    {n:"カンパリビア", p:"700円", tags:["beer"], d:"カンパリのビアカクテル"},
+    {n:"キリン零ICHI", p:"400円", tags:["beer"], d:"ノンアルコールビール"},
+    {n:"角ハイボール", p:"500円", tags:["cocktail"], d:"定番ハイボール"},
+    {n:"るべりえカクテル", p:"500円", tags:["cocktail"], d:"シロップが選べるオリジナルカクテル"},
+    {n:"なんちゃってサングリア", p:"500円", tags:["wine","cocktail"], d:"赤／白"},
+    {n:"大人のクリームソーダ", p:"600円", tags:["cocktail"], d:"ミントのお酒のクリームソーダ"},
+    {n:"アペロールソーダ", p:"500円", tags:["cocktail"], d:"アペロールのソーダ割り"},
+    {n:"リモンチェッロ", p:"400円〜500円", tags:["cocktail"], d:"ショット400円／ソーダ割り500円"},
+    {n:"レモンチューハイ", p:"450円", tags:["cocktail"], d:"レモンのチューハイ"},
+    {n:"ハウスワイン（グラス）", p:"500円", tags:["wine"], d:"赤／白"},
+    {n:"ホットワイン", p:"500円", tags:["wine"], d:"赤／白"},
+    {n:"ボトルワイン", p:"1,800円", tags:["wine"], d:"赤／白"},
+    {n:"スパークリングワイン", p:"2,900円", tags:["wine"], d:"ボトル"},
+    {n:"リキュール各種", p:"500円〜", tags:["other"], d:"パスティス／カルヴァドス／アマレット／ジン／ラム ほか"},
+    {n:"於漫夜姫（おはるめ）純米吟醸 生原酒", p:"500円", tags:["other"], d:"群馬県産酒米「舞風」の日本酒。ワイングラスで提供"}
+  ]
+}
+];
+
+var diagCat = null;
+
+function hideAll(){
+  ["screen-start","screen-dcats","screen-dpref","screen-roulette","screen-result"].forEach(function(id){
+    document.getElementById(id).classList.add("hidden");
+  });
+}
+function showStart(){ hideAll(); document.getElementById("screen-start").classList.remove("hidden"); window.scrollTo(0,0); }
+// 季節メニューは内容が変動するため、ページ内に固定せず季節メニューのリンク先へ直接飛ばす
+var SEASONAL_URL = "https://lebelier-menu.my.canva.site/page-5";
+function goSeasonal(){ window.location.href = SEASONAL_URL; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function topHtml(it){
+  if(!it.top) return "";
+  return '<div class="top-box"><span class="top-label">トッピング・オプション</span><br>' + esc(it.top) + '</div>';
+}
+function imgHtml(it){
+  if(!it.img) return "";
+  return '<img class="result-img" src="' + it.img + '" alt="' + esc(it.n) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+}
+function subImgHtml(it){
+  if(!it.img) return "";
+  return '<img class="sub-img" src="' + it.img + '" alt="' + esc(it.n) + '" loading="lazy" onerror="this.style.display=\'none\'">';
+}
+
+/* ---------- 診断 ---------- */
+function showDiagCats(){
+  hideAll();
+  var box = document.getElementById("diagCatChoices");
+  var html = "";
+  CATS.forEach(function(c){
+    html += '<button class="choice" onclick="pickDiagCat(\'' + c.id + '\')">' +
+      '<span class="ico">' + c.icon + '</span>' +
+      '<span><span class="t">' + esc(c.name) + '</span><br><span class="d">' + esc(c.sub) + '（' + c.items.length + '品）</span></span>' +
+      '<span class="arrow">›</span></button>';
+  });
+  html += '<button class="choice" onclick="goSeasonal()">' +
+    '<span class="ico">🌿</span>' +
+    '<span><span class="t">季節メニュー</span><br><span class="d">今だけの味も見てみたい（材料終わり次第終了）</span></span>' +
+    '<span class="arrow">›</span></button>';
+  box.innerHTML = html;
+  document.getElementById("screen-dcats").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+function findCat(id){ for(var i=0;i<CATS.length;i++){ if(CATS[i].id===id) return CATS[i]; } return null; }
+function pickDiagCat(id){
+  diagCat = findCat(id);
+  if(!diagCat) return;
+  document.getElementById("diagPrefTitle").textContent = diagCat.name + "では、好みは？";
+  var box = document.getElementById("diagPrefChoices");
+  var html = "";
+  diagCat.filters.forEach(function(f){
+    var cnt = diagCat.items.filter(function(it){ return it.tags.indexOf(f.k) >= 0; }).length;
+    html += '<button class="choice" onclick="pickDiagPref(\'' + f.k + '\')">' +
+      '<span class="ico">' + f.ico + '</span>' +
+      '<span><span class="t">' + esc(f.t) + '</span><br><span class="d">' + esc(f.d) + '</span></span>' +
+      '<span class="arrow">›</span></button>';
+  });
+  html += '<button class="choice" onclick="pickDiagPref(\'\')">' +
+    '<span class="ico">🎲</span>' +
+    '<span><span class="t">おまかせ</span><br><span class="d">' + esc(diagCat.name) + 'の中からランダムで1品</span></span>' +
+    '<span class="arrow">›</span></button>';
+  box.innerHTML = html;
+  hideAll();
+  document.getElementById("screen-dpref").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+function pickDiagPref(key){
+  var pool = diagCat.items.filter(function(it){ return !key || it.tags.indexOf(key) >= 0; });
+  if(!pool.length) pool = diagCat.items;
+  var main = pool[Math.floor(Math.random() * pool.length)];
+  // 「こちらもどうぞ」は同カテゴリ・同系のみ：選んだ好みと同じプールから出す。
+  // 好みが1品しかない場合は、その品と同じタグを持つ同カテゴリ品から出す。それもなければ出さない。
+  var subPool;
+  if(key){
+    subPool = pool.filter(function(it){ return it !== main; });
+    if(!subPool.length){
+      subPool = diagCat.items.filter(function(it){ return it !== main && it.tags.some(function(t){ return main.tags.indexOf(t) >= 0; }); });
+    }
+  } else {
+    subPool = diagCat.items.filter(function(it){ return it !== main && it.tags.some(function(t){ return main.tags.indexOf(t) >= 0; }); });
+  }
+  var sub = subPool.length ? subPool[Math.floor(Math.random() * subPool.length)] : null;
+  var html = "";
+  html += '<div style="text-align:center"><span class="result-badge">あなたにはこれ！</span></div>';
+  html += '<div class="result-cat">' + diagCat.icon + ' ' + esc(diagCat.name) + '</div>';
+  html += imgHtml(main);
+  html += '<div class="result-name">' + esc(main.n) + '</div>';
+  html += '<div class="result-price">' + esc(main.p) + ' <span style="font-size:12px;color:var(--muted)">（税込）</span></div>';
+  if(main.note) html += '<div style="text-align:center"><span class="note-badge">' + esc(main.note) + '</span></div>';
+  html += '<p class="result-desc">' + esc(main.d) + '</p>';
+  html += topHtml(main);
+  html += '<p class="small">この名前をスタッフにお伝えください</p>';
+  if(sub){
+    html += '<div class="sub-rec"><div class="sub-label">こちらもどうぞ</div>' +
+      subImgHtml(sub) +
+      '<div class="sub-name">' + esc(sub.n) + '</div>' +
+      '<div class="sub-price">' + esc(sub.p) + ' <span style="font-size:12px;color:var(--muted)">（税込）</span></div>' +
+      '<p class="result-desc" style="font-size:14px">' + esc(sub.d) + '</p>' +
+      (sub.top ? '<p class="small" style="margin-top:2px">トッピング・オプション：' + esc(sub.top) + '</p>' : '') + '</div>';
+  }
+  html += '<div class="stack">' +
+    '<button class="btn btn-sub" onclick="pickDiagPref(\'' + key + '\')">同じ好みでもう一度</button>' +
+    '<button class="btn btn-ghost" onclick="showDiagCats()">カテゴリを選び直す</button>' +
+    '<button class="btn btn-ghost" onclick="showStart()">トップへ戻る</button></div>';
+  document.getElementById("resultCard").innerHTML = html;
+  hideAll();
+  document.getElementById("screen-result").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+
+/* ---------- ルーレット ---------- */
+var PALETTE = [
+  { fill: "#A33327", text: "#FFFFFF" },
+  { fill: "#E9C86B", text: "#40312F" },
+  { fill: "#EEE4DA", text: "#40312F" },
+  { fill: "#F8F5EF", text: "#40312F" }
+];
+var wheelCat = null;
+var wheelRotation = 0;
+var wheelSpinning = false;
+
+function shortLabel(name){
+  var s = name.replace(/（.*?）/g, "").replace(/\(.*?\)/g, "");
+  if(s.length <= 8) return s;
+  var cut = Math.ceil(s.length / 2);
+  return s.slice(0, cut) + "\n" + s.slice(cut);
+}
+function buildChips(){
+  var box = document.getElementById("rouletteChips");
+  var html = "";
+  CATS.forEach(function(c){
+    html += '<button type="button" class="p-chip" data-cat="' + c.id + '" onclick="setWheelCat(\'' + c.id + '\')">' + c.icon + ' ' + esc(c.name) + '</button>';
+  });
+  html += '<button type="button" class="p-chip" data-cat="seasonal" onclick="goSeasonal()">🌿 季節メニュー</button>';
+  box.innerHTML = html;
+}
+function setWheelCat(id){
+  if(wheelSpinning) return;
+  wheelCat = findCat(id);
+  if(!wheelCat) return;
+  var chips = document.querySelectorAll("#rouletteChips .p-chip");
+  chips.forEach(function(ch){ ch.classList.toggle("active", ch.getAttribute("data-cat") === id); });
+  wheelRotation = 0;
+  var g = document.getElementById("wheelRot");
+  g.style.transition = "none";
+  g.style.transform = "rotate(0deg)";
+  buildWheel();
+  document.getElementById("rouletteResult").classList.add("hidden");
+  document.getElementById("rouletteDesc").innerHTML = esc(wheelCat.name) + " 全" + wheelCat.items.length + "品からランダムで1つ出ます";
+}
+function buildWheel(){
+  var g = document.getElementById("wheelRot");
+  var cx = 160, cy = 160, r = 156;
+  var items = wheelCat.items;
+  var n = items.length;
+  var seg = 360 / n;
+  var html = "";
+  for(var i = 0; i < n; i++){
+    var a0 = (i * seg - 90 - seg / 2) * Math.PI / 180;
+    var a1 = (i * seg - 90 + seg / 2) * Math.PI / 180;
+    var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
+    var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+    var large = seg > 180 ? 1 : 0;
+    html += '<path d="M ' + cx + ' ' + cy + ' L ' + x0.toFixed(2) + ' ' + y0.toFixed(2) +
+      ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + x1.toFixed(2) + ' ' + y1.toFixed(2) +
+      ' Z" fill="' + PALETTE[i % PALETTE.length].fill + '" stroke="#FFFFFF" stroke-width="2"/>';
+  }
+  for(var j = 0; j < n; j++){
+    var label = shortLabel(items[j].n);
+    var lines = label.split("\n");
+    var maxLen = 0;
+    lines.forEach(function(L){ if(L.length > maxLen) maxLen = L.length; });
+    var fs = n >= 16 ? 9.5 : (n >= 12 ? 11 : (maxLen >= 7 ? 11.5 : (maxLen >= 5 ? 13 : 15)));
+    if(n >= 16 && maxLen >= 6) fs = 8.5;
+    var lh = fs * 1.25;
+    var radius = n >= 12 ? 112 : 104;
+    var firstY = 160 - radius - (lines.length - 1) * lh / 2 + fs * 0.35;
+    var tspans = "";
+    lines.forEach(function(L, t){
+      tspans += '<tspan x="160" dy="' + (t === 0 ? 0 : lh.toFixed(1)) + '">' + esc(L) + '</tspan>';
+    });
+    html += '<g transform="rotate(' + (j * seg) + ' 160 160)">' +
+      '<text x="160" y="' + firstY.toFixed(1) + '" text-anchor="middle" font-size="' + fs + '" font-weight="800" fill="' + PALETTE[j % PALETTE.length].text + '">' + tspans + '</text></g>';
+  }
+  g.innerHTML = html;
+}
+function showRoulette(){
+  hideAll();
+  document.getElementById("screen-roulette").classList.remove("hidden");
+  document.getElementById("rouletteResult").classList.add("hidden");
+  if(!wheelCat) setWheelCat("hall");
+  window.scrollTo(0,0);
+}
+function spinRoulette(){
+  if(wheelSpinning || !wheelCat) return;
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var n = wheelCat.items.length;
+  var seg = 360 / n;
+  var winner = Math.floor(Math.random() * n);
+  var jitter = (Math.random() * 0.6 - 0.3) * seg;
+  var baseTarget = (360 - winner * seg + jitter) % 360;
+  var delta = ((baseTarget - (wheelRotation % 360)) + 360) % 360;
+  var turns = reduced ? 360 : 360 * 5;
+  var duration = reduced ? 700 : 4600;
+  wheelRotation = wheelRotation + turns + delta;
+  wheelSpinning = true;
+  document.getElementById("rouletteResult").classList.add("hidden");
+  var spinBtn = document.getElementById("spinBtn");
+  var centerBtn = document.getElementById("wheelCenterBtn");
+  spinBtn.disabled = true; centerBtn.disabled = true;
+  spinBtn.textContent = "回転中…"; centerBtn.textContent = "回転中";
+  document.querySelectorAll("#rouletteChips .p-chip").forEach(function(ch){ ch.disabled = true; });
+  var g = document.getElementById("wheelRot");
+  g.style.transition = "transform " + duration + "ms cubic-bezier(.12,.8,.08,1)";
+  g.style.transform = "rotate(" + wheelRotation + "deg)";
+  setTimeout(function(){
+    wheelSpinning = false;
+    spinBtn.disabled = false; centerBtn.disabled = false;
+    spinBtn.textContent = "まわす"; centerBtn.textContent = "まわす";
+    document.querySelectorAll("#rouletteChips .p-chip").forEach(function(ch){ ch.disabled = false; });
+    var p = wheelCat.items[winner];
+    var html = '<span class="result-badge">🎉 今日のおすすめ</span>' +
+      '<div class="result-cat">' + wheelCat.icon + ' ' + esc(wheelCat.name) + '</div>' +
+      imgHtml(p) +
+      '<div class="result-name">' + esc(p.n) + '</div>' +
+      '<div class="result-price">' + esc(p.p) + ' <span style="font-size:12px;color:var(--muted)">（税込）</span></div>' +
+      (p.note ? '<div><span class="note-badge">' + esc(p.note) + '</span></div>' : '') +
+      '<p class="result-desc">' + esc(p.d) + '</p>' +
+      topHtml(p) +
+      '<p class="small">この名前をスタッフにお伝えください</p>' +
+      '<div class="stack"><button class="btn btn-sub" onclick="spinRoulette()">もう一度回す</button>' +
+      '<button class="btn btn-ghost" onclick="showStart()">トップへ戻る</button></div>';
+    var panel = document.getElementById("rouletteResult");
+    panel.innerHTML = html;
+    panel.classList.remove("hidden");
+    panel.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "nearest" });
+  }, duration + 60);
+}
+
+buildChips();
+</script>
+</body>
+</html>
